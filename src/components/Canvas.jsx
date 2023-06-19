@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CharactersObjects } from '../utils/Characters'
+import Game from './Game'
 
 function Canvas ({ selected }) {
   const canvasRef = useRef()
   const characters = CharactersObjects()
   const [position, setPosition] = useState({ x: 10, y: 10 })
   const filterCharactersPositionRef = useRef([])
+  const collidedCharacters = useRef([])
+  console.log(collidedCharacters.current)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
-
-    const collidedCharacters = []
 
     const handleKey = (e) => {
       const { key } = e
@@ -57,10 +58,9 @@ function Canvas ({ selected }) {
           position.x + 50 > e.x &&
           position.y < e.y + 50 &&
           position.y + 50 > e.y &&
-          !collidedCharacters.includes(e.name) // Verificar si no se ha detectado colisión previamente
+          !collidedCharacters.current.includes(e.name) // Verificar si no se ha detectado colisión previamente
         ) {
-          console.log(`Colisión con ${e.name}`)
-          collidedCharacters.push(e.name) // Agregar el nombre del personaje a los que ya han colisionado
+          collidedCharacters.current.push(e.name) // Agregar el nombre del personaje a los que ya han colisionado
           // Realizar las acciones que desees cuando haya una colisión
         }
       })
@@ -104,9 +104,13 @@ function Canvas ({ selected }) {
   }, [selected])
 
   return (
-    <canvas ref={canvasRef} width={400} height={400} className='bg-slate-400'>
-      {/* `Your browser does not support the canvas element.` */}
-    </canvas>
+    <>
+
+      <canvas ref={canvasRef} width={400} height={400} className='bg-slate-400'>
+        {/* `Your browser does not support the canvas element.` */}
+      </canvas>
+      {collidedCharacters.current.length > 0 && <Game enemy={collidedCharacters.current[0]} selected={selected} characters={characters} />}
+    </>
   )
 }
 

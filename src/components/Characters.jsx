@@ -31,6 +31,7 @@ function Characters () {
         {showSelected && <p>You select {showSelected} as your character</p>}
       </section>
       <Canvas selected={showSelected} />
+
     </>
   )
 }
