@@ -5,7 +5,6 @@ import Canvas from './Canvas'
 function Characters () {
   const [selected, setSelected] = useState(null)
   const [showSelected, setShowSelected] = useState(null)
-  console.log(showSelected)
 
   const handleClick = ({ characterName }) => {
     setSelected(characterName)
@@ -19,9 +18,9 @@ function Characters () {
           {
          CharactersObjects().map(character =>
            (
-             <li key={character.name} className='flex flex-col gap-2 items-center' onClick={() => handleClick({ characterName: character.name })}>
+             <li key={character.name} className='flex flex-col gap-2 items-center ' onClick={() => handleClick({ characterName: character.name })}>
                <h3 className='text-xl'>{character.name}</h3>
-               <img src={character.img} alt={character.name} className='w-52' />
+               <img src={character.img} alt={character.name} className={`w-52 p-8 rounded-xl cursor-pointer ${selected === character.name ? 'bg-[#FFF4F4]' : ''}`} />
              </li>
            )
          )
